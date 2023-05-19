@@ -5,14 +5,43 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Document</title>
-	</head>
-	<body>
+		<link rel="stylesheet" href="./style.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+			integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"
 			integrity="sha512-YsR46MmyChktsyMMou+Bs74oCa/CDdwft7rJ5wlnmDzMj1mzqncsfJamEEf99Nk7IB0JpTMo5hS8rxB49FUktQ=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"
 		></script>
+	</head>
+	<body>
+		<div class="cover-image"></div>
+		<h2 class="song-title"></h2>
+		<div class="song-artist"></div>
+		<div class="controls">
+			<button type="button" class="btn-shuffle">
+				<i class="fa-solid fa-shuffle"></i>
+			</button>
+			<button type="button" class="btn-prev">
+				<i class="fa-solid fa-backward-step"></i>
+			</button>
+			<button type="button" class="btn-play" id="btn-play">
+				<i class="fa-solid fa-pause"></i>
+				<span class="play-circle"></span>
+			</button>
+			<button type="button" class="btn-next">
+				<i class="fa-solid fa-forward-step"></i>
+			</button>
+			<button type="button" class="btn-repeat">
+				<i class="fa-solid fa-repeat"></i>
+			</button>
+		</div>
 		<script src="./main.js" type="module"></script>
 	</body>
 </html>
