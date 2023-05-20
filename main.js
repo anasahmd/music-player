@@ -16,6 +16,7 @@ function createMusicControl() {
 	let currentPlaying = 0;
 	let isPlaying = false;
 	let audio = document.createElement('audio');
+	let isSeeking = false;
 
 	function render() {
 		let song = songs[currentPlaying];
@@ -36,10 +37,12 @@ function createMusicControl() {
 			totalDuration.innerHTML = formatTime(audio.duration);
 		};
 		audio.addEventListener('timeupdate', () => {
-			const progress = (audio.currentTime / audio.duration) * 100;
-			progressBar.value = progress * 5;
-			progressBar.style.background = `linear-gradient(to right, #fff ${progress}%, #333 ${progress}%)`;
-			playedDuration.innerHTML = formatTime(audio.currentTime);
+			if (!isSeeking) {
+				const progress = (audio.currentTime / audio.duration) * 100;
+				progressBar.value = progress * 5;
+				progressBar.style.background = `linear-gradient(to right, #fff ${progress}%, #333 ${progress}%)`;
+				playedDuration.innerHTML = formatTime(audio.currentTime);
+			}
 		});
 	}
 	render();
@@ -88,6 +91,10 @@ function createMusicControl() {
 		play();
 	}
 
+	function setSeeking(bool) {
+		isSeeking = bool;
+	}
+
 	function seek(value) {
 		const progress = (audio.duration / 500) * value;
 
@@ -99,6 +106,7 @@ function createMusicControl() {
 		next,
 		prev,
 		seek,
+		setSeeking,
 	};
 }
 
@@ -116,7 +124,12 @@ btnPrev.addEventListener('click', () => {
 	musicControl.prev();
 });
 
-progressBar.addEventListener('change', (r) => {
+progressBar.addEventListener('mousedown', () => {
+	musicControl.setSeeking(true);
+});
+
+progressBar.addEventListener('mouseup', () => {
+	musicControl.setSeeking(false);
 	musicControl.seek(progressBar.value);
 });
 
