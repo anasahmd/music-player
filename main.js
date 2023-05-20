@@ -97,8 +97,15 @@ function createMusicControl() {
 
 	function seek(value) {
 		const progress = (audio.duration / 500) * value;
-
 		audio.currentTime = progress;
+	}
+
+	function seeking(value) {
+		const time = (audio.duration / 500) * value;
+		const progress = (time / audio.duration) * 100;
+		progressBar.value = progress * 5;
+		progressBar.style.background = `linear-gradient(to right, #fff ${progress}%, #333 ${progress}%)`;
+		playedDuration.innerHTML = formatTime(time);
 	}
 
 	return {
@@ -107,6 +114,7 @@ function createMusicControl() {
 		prev,
 		seek,
 		setSeeking,
+		seeking,
 	};
 }
 
@@ -126,6 +134,10 @@ btnPrev.addEventListener('click', () => {
 
 progressBar.addEventListener('mousedown', () => {
 	musicControl.setSeeking(true);
+});
+
+progressBar.addEventListener('input', () => {
+	musicControl.seeking(progressBar.value);
 });
 
 progressBar.addEventListener('mouseup', () => {
