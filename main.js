@@ -8,6 +8,8 @@ const songArtist = document.querySelector('.song-artist');
 const btnNext = document.querySelector('.btn-next');
 const btnPrev = document.querySelector('.btn-prev');
 const btnPlay = document.querySelector('.btn-play');
+const btnShuffle = document.querySelector('.btn-shuffle');
+const btnRepeat = document.querySelector('.btn-repeat');
 const progress = document.querySelector('.progress');
 const totalDuration = document.querySelector('.total-duration');
 const playedDuration = document.querySelector('.played-duration');
@@ -22,18 +24,22 @@ function createMusicControl() {
 	let isPlaying = false;
 	let audio = document.createElement('audio');
 	let isSeeking = false;
+	let isShuffling = false;
+	let isRepeating = false;
 
 	function render() {
 		let song = songs[currentPlaying];
 
-		audio.src = URL.createObjectURL(songs[currentPlaying].fileName);
+		audio.src = song.fileName;
 		progress.appendChild(audio);
 
-		let blob = new Blob([new Uint8Array(song.cover.data)], {
-			type: song.cover.format,
-		});
-		var url = URL.createObjectURL(blob);
-		coverImage.src = url;
+		if (song.cover) {
+			let blob = new Blob([new Uint8Array(song.cover.data)], {
+				type: song.cover.format,
+			});
+			var url = URL.createObjectURL(blob);
+		}
+		coverImage.src = url ? url : './images/default.png';
 
 		songTitle.innerHTML = song.title;
 		songArtist.innerHTML = song.artist;
@@ -52,7 +58,13 @@ function createMusicControl() {
 	render();
 
 	audio.addEventListener('ended', () => {
-		next();
+		if (isRepeating) {
+			repeat();
+		} else if (isShuffling) {
+			shuffle();
+		} else {
+			next();
+		}
 	});
 
 	function play() {
@@ -86,11 +98,26 @@ function createMusicControl() {
 	}
 
 	function prev() {
-		if (currentPlaying <= 0) {
-			currentPlaying = songs.length - 1;
-		} else {
-			currentPlaying -= 1;
+		if (audio.currentTime < 5) {
+			if (currentPlaying <= 0) {
+				currentPlaying = songs.length - 1;
+			} else {
+				currentPlaying -= 1;
+			}
 		}
+
+		render();
+		play();
+	}
+
+	function repeat() {
+		render();
+		play();
+	}
+
+	function shuffle() {
+		let random = Math.floor(Math.random() * songs.length);
+		currentPlaying = random;
 		render();
 		play();
 	}
@@ -112,6 +139,26 @@ function createMusicControl() {
 		playedDuration.innerHTML = formatTime(time);
 	}
 
+	function changeShuffleMode() {
+		if (isShuffling) {
+			isShuffling = false;
+			btnShuffle.children[0].style.color = '#333';
+		} else {
+			isShuffling = true;
+			btnShuffle.children[0].style.color = '#fff';
+		}
+	}
+
+	function changeRepeatMode() {
+		if (isRepeating) {
+			isRepeating = false;
+			btnRepeat.children[0].style.color = '#333';
+		} else {
+			isRepeating = true;
+			btnRepeat.children[0].style.color = '#fff';
+		}
+	}
+
 	return {
 		playPause,
 		next,
@@ -119,6 +166,8 @@ function createMusicControl() {
 		seek,
 		setSeeking,
 		seeking,
+		changeShuffleMode,
+		changeRepeatMode,
 	};
 }
 
@@ -141,6 +190,14 @@ btnNext.addEventListener('click', () => {
 
 btnPrev.addEventListener('click', () => {
 	musicControl.prev();
+});
+
+btnShuffle.addEventListener('click', () => {
+	musicControl.changeShuffleMode();
+});
+
+btnRepeat.addEventListener('click', () => {
+	musicControl.changeRepeatMode();
 });
 
 progressBar.addEventListener('mousedown', () => {

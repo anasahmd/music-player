@@ -1,10 +1,10 @@
-let fileNames;
+let files;
 let songs = [];
 
 const input = document.getElementById('audio-input');
 
 input.addEventListener('change', (e) => {
-	fileNames = e.target.files;
+	files = e.target.files;
 });
 
 class Song {
@@ -17,19 +17,18 @@ class Song {
 }
 
 export default async function createSongs() {
-	for (let fileName of fileNames) {
-		await createSong(fileName);
+	for (let file of files) {
+		await createSong(file);
 
-		function createSong(fileName) {
+		function createSong(file) {
 			return new Promise(function (resolve, reject) {
-				jsmediatags.read(fileName, {
+				jsmediatags.read(file, {
 					onSuccess: function (tag) {
-						const song = new Song(
-							fileName,
-							tag.tags.title,
-							tag.tags.artist,
-							tag.tags.picture
-						);
+						const fileName = URL.createObjectURL(file);
+						const title = tag.tags.title ? tag.tags.title : file.name;
+						const artist = tag.tags.artist ? tag.tags.artist : 'Unknown';
+						const cover = tag.tags.picture;
+						const song = new Song(fileName, title, artist, cover);
 						resolve(songs.push(song));
 					},
 					onError: function (error) {
