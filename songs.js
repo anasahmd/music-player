@@ -4,7 +4,7 @@ let songs = [];
 
 class Song {
 	constructor(fileName, title, artist, cover) {
-		this.fileName = fileName + '.mp3';
+		this.fileName = 'Music/' + fileName + '.mp3';
 		this.title = title;
 		this.artist = artist;
 		this.cover = cover;
