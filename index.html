@@ -21,42 +21,45 @@
 		></script>
 	</head>
 	<body>
-		<div class="cover-container">
-			<img src="" alt="" class="cover-image" />
-		</div>
-		<h2 class="song-title"></h2>
-		<div class="song-artist"></div>
-		<div class="progress">
-			<input
-				type="range"
-				name=""
-				id="progress-bar"
-				min="1"
-				max="500"
-				value="1"
-			/>
-		</div>
-		<div class="duration">
-			<div class="played-duration">0:00</div>
-			<div class="total-duration">3:15</div>
-		</div>
-		<div class="controls">
-			<button type="button" class="btn-shuffle">
-				<i class="fa-solid fa-shuffle"></i>
-			</button>
-			<button type="button" class="btn-prev">
-				<i class="fa-solid fa-backward-step"></i>
-			</button>
-			<button type="button" class="btn-play" id="btn-play">
-				<i class="fa-solid fa-play"></i>
-				<span class="play-circle"></span>
-			</button>
-			<button type="button" class="btn-next">
-				<i class="fa-solid fa-forward-step"></i>
-			</button>
-			<button type="button" class="btn-repeat">
-				<i class="fa-solid fa-repeat"></i>
-			</button>
+		<input type="file" name="" id="audio-input" accept="audio/mp3, " multiple />
+		<div class="music-container hidden">
+			<div class="cover-container">
+				<img src="" alt="" class="cover-image" />
+			</div>
+			<h2 class="song-title"></h2>
+			<div class="song-artist"></div>
+			<div class="progress">
+				<input
+					type="range"
+					name=""
+					id="progress-bar"
+					min="1"
+					max="500"
+					value="1"
+				/>
+			</div>
+			<div class="duration">
+				<div class="played-duration">0:00</div>
+				<div class="total-duration">3:15</div>
+			</div>
+			<div class="controls">
+				<button type="button" class="btn-shuffle">
+					<i class="fa-solid fa-shuffle"></i>
+				</button>
+				<button type="button" class="btn-prev">
+					<i class="fa-solid fa-backward-step"></i>
+				</button>
+				<button type="button" class="btn-play" id="btn-play">
+					<i class="fa-solid fa-play"></i>
+					<span class="play-circle"></span>
+				</button>
+				<button type="button" class="btn-next">
+					<i class="fa-solid fa-forward-step"></i>
+				</button>
+				<button type="button" class="btn-repeat">
+					<i class="fa-solid fa-repeat"></i>
+				</button>
+			</div>
 		</div>
 		<script src="./main.js" type="module"></script>
 	</body>

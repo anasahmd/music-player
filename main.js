@@ -1,5 +1,6 @@
-import songs from './songs.js';
+import createSong from './songs.js';
 
+const input = document.getElementById('audio-input');
 const coverContainer = document.querySelector('.cover-container');
 const coverImage = document.querySelector('.cover-image');
 const songTitle = document.querySelector('.song-title');
@@ -11,6 +12,10 @@ const progress = document.querySelector('.progress');
 const totalDuration = document.querySelector('.total-duration');
 const playedDuration = document.querySelector('.played-duration');
 const progressBar = document.getElementById('progress-bar');
+const musicContainer = document.querySelector('.music-container');
+
+let musicControl;
+let songs;
 
 function createMusicControl() {
 	let currentPlaying = 0;
@@ -21,8 +26,7 @@ function createMusicControl() {
 	function render() {
 		let song = songs[currentPlaying];
 
-		audio.src = songs[currentPlaying].fileName;
-		// audio.controls = true;
+		audio.src = URL.createObjectURL(songs[currentPlaying].fileName);
 		progress.appendChild(audio);
 
 		let blob = new Blob([new Uint8Array(song.cover.data)], {
@@ -118,7 +122,14 @@ function createMusicControl() {
 	};
 }
 
-let musicControl = createMusicControl();
+input.addEventListener('change', () => {
+	createSong().then((data) => {
+		songs = data;
+		musicControl = createMusicControl();
+		input.classList.add('hidden');
+		musicContainer.classList.remove('hidden');
+	});
+});
 
 btnPlay.addEventListener('click', () => {
 	musicControl.playPause();

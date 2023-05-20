@@ -1,23 +1,28 @@
-const fileNames = ['1', '2', '3', '4', '5'];
-
+let fileNames;
 let songs = [];
+
+const input = document.getElementById('audio-input');
+
+input.addEventListener('change', (e) => {
+	fileNames = e.target.files;
+});
 
 class Song {
 	constructor(fileName, title, artist, cover) {
-		this.fileName = 'Music/' + fileName + '.mp3';
+		this.fileName = fileName;
 		this.title = title;
 		this.artist = artist;
 		this.cover = cover;
 	}
 }
 
-for (let fileName of fileNames) {
-	await createSong(fileName);
-	function createSong(fileName) {
-		return new Promise(function (resolve, reject) {
-			const data = jsmediatags.read(
-				window.location.href + '/Music/' + fileName + '.mp3',
-				{
+export default async function createSongs() {
+	for (let fileName of fileNames) {
+		await createSong(fileName);
+
+		function createSong(fileName) {
+			return new Promise(function (resolve, reject) {
+				jsmediatags.read(fileName, {
 					onSuccess: function (tag) {
 						const song = new Song(
 							fileName,
@@ -30,10 +35,9 @@ for (let fileName of fileNames) {
 					onError: function (error) {
 						reject(console.log(':(', error.type, error.info));
 					},
-				}
-			);
-		});
+				});
+			});
+		}
 	}
+	return songs;
 }
-
-export default songs;

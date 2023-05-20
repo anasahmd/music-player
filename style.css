@@ -121,3 +121,8 @@ body > * {
 	z-index: -1;
 	cursor: pointer;
 }
+
+.hidden {
+	display: none;
+	visibility: hidden;
+}
