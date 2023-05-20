@@ -147,11 +147,20 @@ progressBar.addEventListener('mousedown', () => {
 	musicControl.setSeeking(true);
 });
 
+progressBar.addEventListener('touchstart', () => {
+	musicControl.setSeeking(true);
+});
+
 progressBar.addEventListener('input', () => {
 	musicControl.seeking(progressBar.value);
 });
 
 progressBar.addEventListener('mouseup', () => {
+	musicControl.setSeeking(false);
+	musicControl.seek(progressBar.value);
+});
+
+progressBar.addEventListener('touchend', () => {
 	musicControl.setSeeking(false);
 	musicControl.seek(progressBar.value);
 });
