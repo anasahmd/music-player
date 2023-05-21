@@ -1,7 +1,6 @@
 import createSong from './songs.js';
 
 const input = document.getElementById('audio-input');
-
 const coverImage = document.querySelector('.cover-image');
 const songTitle = document.querySelector('.song-title');
 const songArtist = document.querySelector('.song-artist');
