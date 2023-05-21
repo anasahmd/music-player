@@ -168,7 +168,6 @@ input.addEventListener('change', (e) => {
 	let files = e.target.files;
 	fileInputDiv.classList.add('hidden');
 	spinner.classList.remove('hidden');
-	alert('hello');
 	createSong(files)
 		.then((data) => {
 			songs = data;
