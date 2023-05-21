@@ -1,6 +1,7 @@
 import createSong from './songs.js';
 
 const input = document.getElementById('audio-input');
+const fileInputDiv = document.querySelector('.file-input-div');
 const coverImage = document.querySelector('.cover-image');
 const songTitle = document.querySelector('.song-title');
 const songArtist = document.querySelector('.song-artist');
@@ -168,12 +169,12 @@ input.addEventListener('change', (e) => {
 		.then((data) => {
 			songs = data;
 			musicControl = createMusicControl();
-			input.classList.add('hidden');
+			fileInputDiv.classList.add('hidden');
 			musicContainer.classList.remove('hidden');
 		})
 		.catch((e) => {
 			input.value = '';
-			alert('Unsopperted file format');
+			alert('Unsupported file format!');
 		});
 });
 
