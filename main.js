@@ -1,6 +1,7 @@
 import createSong from './songs.js';
 
 const input = document.getElementById('audio-input');
+
 const coverImage = document.querySelector('.cover-image');
 const songTitle = document.querySelector('.song-title');
 const songArtist = document.querySelector('.song-artist');
@@ -9,7 +10,6 @@ const btnPrev = document.querySelector('.btn-prev');
 const btnPlay = document.querySelector('.btn-play');
 const btnShuffle = document.querySelector('.btn-shuffle');
 const btnRepeat = document.querySelector('.btn-repeat');
-const progress = document.querySelector('.progress');
 const totalDuration = document.querySelector('.total-duration');
 const playedDuration = document.querySelector('.played-duration');
 const progressBar = document.getElementById('progress-bar');
@@ -28,33 +28,26 @@ function createMusicControl() {
 
 	function render() {
 		let song = songs[currentPlaying];
-
 		audio.src = song.fileName;
-		progress.appendChild(audio);
-
-		if (song.cover) {
-			let blob = new Blob([new Uint8Array(song.cover.data)], {
-				type: song.cover.format,
-			});
-			var url = URL.createObjectURL(blob);
-		}
-		coverImage.src = url ? url : './images/default.png';
-
+		document.body.appendChild(audio);
+		coverImage.src = song.cover ? song.cover : './images/default.png';
 		songTitle.innerHTML = song.title;
 		songArtist.innerHTML = song.artist;
-		audio.onloadedmetadata = function () {
-			totalDuration.innerHTML = formatTime(audio.duration);
-		};
-		audio.addEventListener('timeupdate', () => {
-			if (!isSeeking) {
-				const progress = (audio.currentTime / audio.duration) * 100;
-				progressBar.value = progress * 5;
-				progressBar.style.background = `linear-gradient(to right, #fff ${progress}%, #333 ${progress}%)`;
-				playedDuration.innerHTML = formatTime(audio.currentTime);
-			}
-		});
 	}
 	render();
+
+	audio.addEventListener('loadedmetadata', () => {
+		totalDuration.innerHTML = formatTime(audio.duration);
+	});
+
+	audio.addEventListener('timeupdate', () => {
+		if (!isSeeking) {
+			const progress = (audio.currentTime / audio.duration) * 100;
+			progressBar.value = progress * 5;
+			progressBar.style.background = `linear-gradient(to right, #fff ${progress}%, #333 ${progress}%)`;
+			playedDuration.innerHTML = formatTime(audio.currentTime);
+		}
+	});
 
 	audio.addEventListener('ended', () => {
 		if (isRepeating) {
@@ -125,12 +118,12 @@ function createMusicControl() {
 		isSeeking = bool;
 	}
 
-	function seek(value) {
+	function seekAudio(value) {
 		const progress = (audio.duration / 500) * value;
 		audio.currentTime = progress;
 	}
 
-	function seeking(value) {
+	function updateProgressBarSeek(value) {
 		const time = (audio.duration / 500) * value;
 		const progress = (time / audio.duration) * 100;
 		progressBar.value = progress * 5;
@@ -162,9 +155,9 @@ function createMusicControl() {
 		playPause,
 		next,
 		prev,
-		seek,
+		seekAudio,
 		setSeeking,
-		seeking,
+		updateProgressBarSeek,
 		changeShuffleMode,
 		changeRepeatMode,
 	};
@@ -214,17 +207,17 @@ progressBar.addEventListener('touchstart', () => {
 });
 
 progressBar.addEventListener('input', () => {
-	musicControl.seeking(progressBar.value);
+	musicControl.updateProgressBarSeek(progressBar.value);
 });
 
 progressBar.addEventListener('mouseup', () => {
 	musicControl.setSeeking(false);
-	musicControl.seek(progressBar.value);
+	musicControl.seekAudio(progressBar.value);
 });
 
 progressBar.addEventListener('touchend', () => {
 	musicControl.setSeeking(false);
-	musicControl.seek(progressBar.value);
+	musicControl.seekAudio(progressBar.value);
 });
 
 function formatTime(seconds) {
