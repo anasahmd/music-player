@@ -1,12 +1,3 @@
-let files;
-let songs = [];
-
-const input = document.getElementById('audio-input');
-
-input.addEventListener('change', (e) => {
-	files = e.target.files;
-});
-
 class Song {
 	constructor(fileName, title, artist, cover) {
 		this.fileName = fileName;
@@ -16,11 +7,13 @@ class Song {
 	}
 }
 
-export default async function createSongs() {
+export default async function createSongs(files) {
+	let songs = [];
 	for (let file of files) {
-		await createSong(file);
+		const song = await createSong(file);
+		songs.push(song);
 
-		function createSong(file) {
+		async function createSong(file) {
 			return new Promise(function (resolve, reject) {
 				jsmediatags.read(file, {
 					onSuccess: function (tag) {
@@ -29,10 +22,11 @@ export default async function createSongs() {
 						const artist = tag.tags.artist ? tag.tags.artist : 'Unknown';
 						const cover = tag.tags.picture;
 						const song = new Song(fileName, title, artist, cover);
-						resolve(songs.push(song));
+						resolve(song);
 					},
 					onError: function (error) {
-						reject(console.log(':(', error.type, error.info));
+						// reject(console.log(':(', error.type, error.info));
+						reject(new Error('Unsupported file format!'));
 					},
 				});
 			});

@@ -1,7 +1,6 @@
 import createSong from './songs.js';
 
 const input = document.getElementById('audio-input');
-const coverContainer = document.querySelector('.cover-container');
 const coverImage = document.querySelector('.cover-image');
 const songTitle = document.querySelector('.song-title');
 const songArtist = document.querySelector('.song-artist');
@@ -171,13 +170,19 @@ function createMusicControl() {
 	};
 }
 
-input.addEventListener('change', () => {
-	createSong().then((data) => {
-		songs = data;
-		musicControl = createMusicControl();
-		input.classList.add('hidden');
-		musicContainer.classList.remove('hidden');
-	});
+input.addEventListener('change', (e) => {
+	let files = e.target.files;
+	createSong(files)
+		.then((data) => {
+			songs = data;
+			musicControl = createMusicControl();
+			input.classList.add('hidden');
+			musicContainer.classList.remove('hidden');
+		})
+		.catch((e) => {
+			input.value = '';
+			alert('Unsopperted file format');
+		});
 });
 
 btnPlay.addEventListener('click', () => {
