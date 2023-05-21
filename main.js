@@ -14,6 +14,7 @@ const totalDuration = document.querySelector('.total-duration');
 const playedDuration = document.querySelector('.played-duration');
 const progressBar = document.getElementById('progress-bar');
 const musicContainer = document.querySelector('.music-container');
+const spinner = document.querySelector('.spinner');
 
 let musicControl;
 let songs;
@@ -165,11 +166,14 @@ function createMusicControl() {
 
 input.addEventListener('change', (e) => {
 	let files = e.target.files;
+	fileInputDiv.classList.add('hidden');
+	spinner.classList.remove('hidden');
+	alert('hello');
 	createSong(files)
 		.then((data) => {
 			songs = data;
 			musicControl = createMusicControl();
-			fileInputDiv.classList.add('hidden');
+			spinner.classList.add('hidden');
 			musicContainer.classList.remove('hidden');
 		})
 		.catch((e) => {
