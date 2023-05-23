@@ -177,6 +177,8 @@ input.addEventListener('change', (e) => {
 		})
 		.catch((e) => {
 			input.value = '';
+			spinner.classList.add('hidden');
+			fileInputDiv.classList.remove('hidden');
 			alert('Unsupported file format!');
 		});
 });
